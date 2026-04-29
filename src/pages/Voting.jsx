@@ -1,152 +1,234 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { doc, setDoc, onSnapshot, collection } from "firebase/firestore";
+import { db } from "../firebase";
 
 export default function Voting() {
-  const styles = `
-  .voting-container {
-    max-width: 1100px;
-    margin: auto;
-    padding: 40px 20px;
-    text-align: center;
-    font-family: "Inter", sans-serif;
-  }
+  const [selectedTrip, setSelectedTrip] = useState("Panama");
+  const [liveVotes, setLiveVotes] = useState({});
+  const [userVote, setUserVote] = useState(null);
 
-  .itinerary-grid {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 30px;
-    flex-wrap: wrap;
-  }
+  // 👤 GET USER FROM LOCALSTORAGE (FIXED)
+  const getUser = () =>
+    JSON.parse(localStorage.getItem("triplyUser"));
 
-  .itinerary-card {
-    background: white;
-    border-radius: 14px;
-    padding: 20px;
-    width: 300px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transition: transform .2s ease;
-  }
+  const data = {
+    Panama: [
+      {
+        title: "Relax & Beach 🌴",
+        img: "https://images.unsplash.com/photo-1573843981267-be1999ff37cd",
+        items: ["Beach Day", "Boat Tour", "Sunset Dinner"],
+      },
+      {
+        title: "City Explore 🏙️",
+        img: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4",
+        items: ["Old Town", "Museum", "Food Tour"],
+      },
+    ],
 
-  .itinerary-card:hover {
-    transform: translateY(-4px);
-  }
+    Japan: [
+      {
+        title: "Tokyo Nights 🌃",
+        img: "https://images.unsplash.com/photo-1549692520-acc6669e2f0c",
+        items: ["Shibuya", "Arcades", "Street Food"],
+      },
+      {
+        title: "Cultural Day 🎎",
+        img: "https://images.unsplash.com/photo-1526481280695-3c687fd643ed",
+        items: ["Temples", "Tea Ceremony", "Museums"],
+      },
+    ],
+  };
 
-  .itinerary-img {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-    border-radius: 12px;
-  }
+  const destinations = Object.keys(data);
+  const itineraries = data[selectedTrip];
 
-  .itinerary-card h2 {
-    margin-top: 15px;
-    font-size: 20px;
-    font-weight: 600;
-  }
+  // 🔥 LIVE VOTES
+  useEffect(() => {
+    const ref = collection(db, "votes", selectedTrip, "users");
 
-  .itinerary-card ul {
-    text-align: left;
-    margin: 15px 0;
-    padding-left: 20px;
-  }
+    const unsub = onSnapshot(ref, (snapshot) => {
+      const votes = {};
+      const user = getUser();
 
-  .vote-stats {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    font-weight: 600;
-  }
+      let myVote = null;
 
-  .vote-btn {
-    margin-top: 15px;
-    width: 100%;
-    padding: 10px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-  }
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
 
-  .vote-btn:hover {
-    background: #005fcc;
-  }
+        votes[data.option] = (votes[data.option] || 0) + 1;
 
-  .footer-note {
-    margin-top: 40px;
-    font-size: 18px;
-    font-weight: 600;
-  }
+        if (user && docSnap.id === user.email) {
+          myVote = data.option;
+        }
+      });
 
-  .footer-sub {
-    margin-top: 5px;
-    color: #666;
-  }
-  `;
+      setLiveVotes(votes);
+      setUserVote(myVote);
+    });
 
-  const itineraries = [
-    {
-      id: "A",
-      title: "Relax & Beach",
-      img: "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?q=80&w=1200&auto=format&fit=crop",
-      items: ["Beach Day (San Blas)", "Boat Tour", "Sunset Dinner"],
-      votes: 2,
-      percent: 50,
-    },
-    {
-      id: "B",
-      title: "Explore the City",
-      img: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=1200&auto=format&fit=crop",
-      items: ["Casco Viejo Tour", "Museum Visit", "Local Food Tour"],
-      votes: 1,
-      percent: 25,
-    },
-    {
-      id: "C",
-      title: "Adventure",
-      img: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
-      items: ["Monkey Island Tour", "Jungle Hiking", "Ziplining"],
-      votes: 1,
-      percent: 25,
-    },
-  ];
+    return () => unsub();
+  }, [selectedTrip]);
+
+  // 🔥 VOTE (ONE PER USER)
+  async function handleVote(index) {
+    const user = getUser();
+
+    if (!user) {
+      alert("You must be logged in to vote");
+      return;
+    }
+
+    const voteRef = doc(
+      db,
+      "votes",
+      selectedTrip,
+      "users",
+      user.email // ✅ FIXED (no uid needed)
+    );
+
+    await setDoc(voteRef, {
+      option: index,
+      timestamp: Date.now(),
+    });
+  }
 
   return (
-    <>
-      <style>{styles}</style>
+    <div style={styles.page}>
+      <h1 style={styles.title}>Vote Your Trip ✈️</h1>
 
-      <div className="voting-container">
-        <h1>Vote on Your Trip Plan – Panama 🇵🇦</h1>
-
-        <div className="itinerary-grid">
-          {itineraries.map((it) => (
-            <div key={it.id} className="itinerary-card">
-              <img src={it.img} className="itinerary-img" alt={it.title} />
-
-              <h2>{`Itinerary ${it.id} – ${it.title}`}</h2>
-
-              <ul>
-                {it.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-
-              <div className="vote-stats">
-                <span className="vote-count">{it.votes} votes</span>
-                <span className="vote-percent">{it.percent}%</span>
-              </div>
-
-              <button className="vote-btn">Vote</button>
-            </div>
-          ))}
-        </div>
-
-        <p className="footer-note">
-          The itinerary with the most votes will be our official plan!
-        </p>
-        <p className="footer-sub">Members voted: 4 / 6</p>
+      {/* DESTINATION SELECTOR */}
+      <div style={styles.selector}>
+        {destinations.map((d) => (
+          <button
+            key={d}
+            onClick={() => setSelectedTrip(d)}
+            style={{
+              ...styles.destButton,
+              background: selectedTrip === d ? "#111" : "#fff",
+              color: selectedTrip === d ? "#fff" : "#111",
+            }}
+          >
+            {d}
+          </button>
+        ))}
       </div>
-    </>
+
+      {/* CARDS */}
+      <div style={styles.cardRow}>
+        {itineraries.map((it, i) => {
+          const votes = liveVotes[i] || 0;
+
+          return (
+            <div key={i} style={styles.card}>
+              <img src={it.img} alt="" style={styles.image} />
+
+              <div style={styles.cardBody}>
+                <h3>{it.title}</h3>
+
+                <ul>
+                  {it.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+
+                <div style={styles.voteCount}>
+                  Votes: {votes}
+                </div>
+
+                <button
+                  onClick={() => handleVote(i)}
+                  style={{
+                    ...styles.voteButton,
+                    background: userVote === i ? "#4CAF50" : "#111",
+                  }}
+                >
+                  {userVote === i ? "Voted ✓" : "Vote"}
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <p style={styles.footer}>
+        One vote per user • Live updates across all users 🌍
+      </p>
+    </div>
   );
 }
+
+/* 🎨 STYLES */
+const styles = {
+  page: {
+    fontFamily: "Inter",
+    padding: "30px",
+    maxWidth: "1100px",
+    margin: "auto",
+  },
+
+  title: {
+    textAlign: "center",
+    marginBottom: "20px",
+  },
+
+  selector: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "10px",
+    marginBottom: "25px",
+  },
+
+  destButton: {
+    padding: "10px 18px",
+    borderRadius: "999px",
+    border: "1px solid #ddd",
+    cursor: "pointer",
+  },
+
+  cardRow: {
+    display: "flex",
+    gap: "15px",
+    overflowX: "auto",
+    paddingBottom: "10px",
+  },
+
+  card: {
+    minWidth: "260px",
+    borderRadius: "16px",
+    background: "#fff",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+    overflow: "hidden",
+  },
+
+  image: {
+    width: "100%",
+    height: "140px",
+    objectFit: "cover",
+  },
+
+  cardBody: {
+    padding: "12px",
+  },
+
+  voteCount: {
+    marginTop: "10px",
+    fontSize: "14px",
+    color: "#666",
+  },
+
+  voteButton: {
+    marginTop: "10px",
+    width: "100%",
+    padding: "10px",
+    border: "none",
+    borderRadius: "10px",
+    color: "white",
+    cursor: "pointer",
+  },
+
+  footer: {
+    textAlign: "center",
+    marginTop: "20px",
+    color: "#666",
+  },
+};
