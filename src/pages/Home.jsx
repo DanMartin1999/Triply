@@ -9,11 +9,13 @@ export default function Home() {
   const [active, setActive] = useState("Home");
   const [homeTab, setHomeTab] = useState("Beach");
 
+  // 🔥 BEACH PLACES
   const beachPlaces = [
     {
       name: "Panama",
       location: "Central America",
       price: "$120",
+      route: "/panama",
       image: "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?q=80&w=1200&auto=format&fit=crop",
       tag: "Island escape",
     },
@@ -21,30 +23,35 @@ export default function Home() {
       name: "Barbados",
       location: "Caribbean",
       price: "$260",
+      route: "/barbados",
       image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
       tag: "Caribbean calm",
     },
-   {
-  name: "Japan",
-  location: "Tokyo",
-  price: "$200",
-  image: "https://images.unsplash.com/photo-1590559899731-a382839e5549?q=80&w=1200&auto=format&fit=crop",
-  tag: "Street food & nightlife",
-},
+    {
+      name: "Japan",
+      location: "Tokyo",
+      price: "$200",
+      route: "/japan",
+      image: "https://images.unsplash.com/photo-1590559899731-a382839e5549?q=80&w=1200&auto=format&fit=crop",
+      tag: "Street food & nightlife",
+    },
     {
       name: "Hawaii",
       location: "United States",
       price: "$355",
+      route: "/hawaii", // ⚠️ only works if you create this page
       image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
       tag: "Tropical calm",
     },
   ];
 
+  // 🔥 CULTURE PLACES
   const culturePlaces = [
     {
       name: "Madrid",
       location: "Spain",
       price: "$150",
+      route: "/madrid",
       image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=1200&auto=format&fit=crop",
       tag: "Art & culture",
     },
@@ -52,6 +59,7 @@ export default function Home() {
       name: "Tokyo",
       location: "Japan",
       price: "$200",
+      route: "/japan",
       image: "https://images.unsplash.com/photo-1590559899731-a382839e5549?q=80&w=1200&auto=format&fit=crop",
       tag: "Street food & nightlife",
     },
@@ -73,12 +81,12 @@ export default function Home() {
               key={cat}
               className={active === cat ? "active" : ""}
               onClick={() => {
-  setActive(cat);
+                setActive(cat);
 
-  if (cat === "Voting") navigate("/voting");
-  if (cat === "Support") navigate("/support");
-  if (cat === "Map") navigate("/map");
-}}
+                if (cat === "Voting") navigate("/voting");
+                if (cat === "Support") navigate("/support");
+                if (cat === "Map") navigate("/map");
+              }}
             >
               {cat}
             </button>
@@ -118,14 +126,16 @@ export default function Home() {
               <div
                 className="card"
                 key={i}
-                onClick={() => {
-                  // ✅ DIRECT ROUTES (NO MORE dynamic /destination/)
-                  if (place.name === "Barbados") navigate("/barbados");
-                  if (place.name === "Panama") navigate("/panama");
-                }}
+                onClick={() => navigate(place.route)}
               >
                 <div className="image">
-                  <img src={place.image} alt={place.name} />
+                  <img
+                    src={place.image}
+                    alt={place.name}
+                    onError={(e) => {
+                      e.target.src = "https://via.placeholder.com/400";
+                    }}
+                  />
                   <span className="tag">{place.tag}</span>
                 </div>
 
