@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 
 const styles = `*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb}.app{padding:24px;min-height:100vh}.app h1{text-align:center;color:#0f172a}.container{display:grid;grid-template-columns:320px 1fr;gap:24px;max-width:1400px;margin:0 auto}.sidebar{display:grid;gap:16px}.card{border:none;background:#fff;border-radius:18px;padding:0;overflow:hidden;cursor:pointer;text-align:left;box-shadow:0 10px 25px rgba(0,0,0,.08)}.card.active{outline:3px solid #2563eb}.card img{width:100%;height:170px;object-fit:cover}.card h3,.card p{padding:0 14px}.card h3{margin:14px 0 8px}.card p{margin:0 0 14px;color:#475569}.details{background:#fff;border-radius:20px;padding:22px;box-shadow:0 10px 25px rgba(0,0,0,.08)}.hero-img{width:100%;height:320px;object-fit:cover;border-radius:16px}.btn,.direction-link{display:inline-block;background:#2563eb;color:#fff;text-decoration:none;padding:12px 16px;border-radius:12px;margin:12px 0}.section-title{margin-top:28px;color:#0f172a}.places-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}.place-card{background:#f8fafc;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0}.place-card img{width:100%;height:160px;object-fit:cover}.place-card-content{padding:14px}.place-card-content h4{margin:0 0 8px}.place-card-content p{color:#475569;font-size:14px;line-height:1.45}.direction-link{margin-top:10px;padding:10px 14px}.details h2{margin:14px 0;color:#0f172a}@media(max-width:900px){.container{grid-template-columns:1fr}.hero-img{height:240px}}`;
 
@@ -30,68 +29,8 @@ const trips = [
       { name: "Gonpachi", image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900", description: "Traditional Japanese dining experience.", location: "Gonpachi Nishiazabu, Tokyo, Japan" },
       { name: "Tsukiji Itadori", image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=900", description: "Fresh sushi and seafood.", location: "Tsukiji Itadori, Tokyo, Japan" },
     ],
-  },
-  {
-    id: 2,
-    title: "Kyoto Cultural Escape",
-    image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200",
-    start: "Fushimi Inari Shrine, Kyoto, Japan",
-    end: "Kiyomizu-dera Temple, Kyoto, Japan",
-    stops: [
-      { name: "Fushimi Inari Shrine", image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600", location: "Fushimi Inari Shrine, Kyoto, Japan" },
-      { name: "Gion District", image: "https://images.unsplash.com/photo-1526483360412-f4dbaf036963?w=600", location: "Gion District, Kyoto, Japan" },
-      { name: "Kiyomizu-dera Temple", image: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600", location: "Kiyomizu-dera Temple, Kyoto, Japan" },
-    ],
-    activities: [
-      { name: "Arashiyama Bamboo Grove", image: "https://images.unsplash.com/photo-1505069446780-4ef442b5207f?w=900", description: "Walk through Kyoto’s iconic bamboo forest.", location: "Arashiyama, Kyoto, Japan" },
-      { name: "Nijo Castle", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=900", description: "Historic castle showcasing Edo architecture.", location: "Nijo Castle, Kyoto, Japan" },
-      { name: "Philosopher's Path", image: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=900", description: "Peaceful canal-side walking path.", location: "Philosopher's Path, Kyoto, Japan" },
-    ],
-    hotels: [
-      { name: "The Celestine Kyoto", image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900", description: "Elegant traditional-modern stay.", location: "The Celestine Kyoto, Japan" },
-      { name: "Kyoto Brighton Hotel", image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=900", description: "Luxury accommodation near landmarks.", location: "Kyoto Brighton Hotel, Japan" },
-      { name: "Sakura Terrace", image: "https://images.unsplash.com/photo-1455587734955-081b22074882?w=900", description: "Modern hotel with transport access.", location: "Sakura Terrace Kyoto, Japan" },
-    ],
-    restaurants: [
-      { name: "Kyoto Engine Ramen", image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=900", description: "Authentic ramen favorite.", location: "Kyoto Engine Ramen, Japan" },
-      { name: "Gion Karyo", image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=900", description: "Traditional kaiseki dining.", location: "Gion Karyo, Kyoto, Japan" },
-      { name: "Nishiki Warai", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=900", description: "Street-food style okonomiyaki.", location: "Nishiki Warai Kyoto, Japan" },
-    ],
-  },
-  {
-    id: 3,
-    title: "Osaka Fun & Food Adventure",
-    image: "https://images.unsplash.com/photo-1590559899731-a382839e5549?w=1200",
-    start: "Osaka Castle, Osaka, Japan",
-    end: "Dotonbori, Osaka, Japan",
-    stops: [
-      { name: "Osaka Castle", image: "https://images.unsplash.com/photo-1590559899731-a382839e5549?w=600", location: "Osaka Castle, Osaka, Japan" },
-      { name: "Shinsekai", image: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=600", location: "Shinsekai, Osaka, Japan" },
-      { name: "Dotonbori", image: "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?w=600", location: "Dotonbori, Osaka, Japan" },
-    ],
-    activities: [
-      { name: "Universal Studios Japan", image: "https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=900", description: "Thrilling rides and Nintendo World.", location: "Universal Studios Japan, Osaka, Japan" },
-      { name: "Kuromon Market", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900", description: "Street food paradise.", location: "Kuromon Market, Osaka, Japan" },
-      { name: "Umeda Sky Building", image: "https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=900", description: "Observation deck with skyline views.", location: "Umeda Sky Building, Osaka, Japan" },
-    ],
-    hotels: [
-      { name: "Swissotel Nankai Osaka", image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=900", description: "Luxury hotel above Namba Station.", location: "Swissotel Nankai Osaka, Japan" },
-      { name: "Hotel Monterey Grasmere", image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=900", description: "Elegant hotel near Dotonbori.", location: "Hotel Monterey Grasmere Osaka, Japan" },
-      { name: "Cross Hotel Osaka", image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900", description: "Modern stay in central Osaka.", location: "Cross Hotel Osaka, Japan" },
-    ],
-    restaurants: [
-      { name: "Mizuno Okonomiyaki", image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=900", description: "Famous savory pancake restaurant.", location: "Mizuno Dotonbori, Osaka, Japan" },
-      { name: "Kani Doraku", image: "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?w=900", description: "Iconic crab restaurant.", location: "Kani Doraku Dotonbori, Osaka, Japan" },
-      { name: "Ichiran Namba", image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900", description: "Late-night ramen favorite.", location: "Ichiran Namba, Osaka, Japan" },
-    ],
-  },
+  }
 ];
-
-const SECTION_TITLES = {
-  activities: "3 Nearby Activities",
-  hotels: "3 Nearby Hotels",
-  restaurants: "3 Nearby Restaurants",
-};
 
 function mapLink(location) {
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location)}&travelmode=driving`;
@@ -100,9 +39,7 @@ function mapLink(location) {
 function tripRouteLink(trip) {
   const origin = encodeURIComponent(trip.start);
   const destination = encodeURIComponent(trip.end);
-  const waypoints = trip.stops.slice(1, -1).map((stop) => encodeURIComponent(stop.location)).join("|");
-  const waypointPart = waypoints ? `&waypoints=${waypoints}` : "";
-  return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}${waypointPart}&travelmode=driving`;
+  return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
 }
 
 function PlaceSection({ title, items }) {
@@ -111,12 +48,11 @@ function PlaceSection({ title, items }) {
       <h3 className="section-title">{title}</h3>
       <div className="places-grid">
         {items.map((item, index) => (
-          <article className="place-card" key={`${title}-${index}`}>
+          <article className="place-card" key={index}>
             <img src={item.image} alt={item.name} />
             <div className="place-card-content">
               <h4>{item.name}</h4>
               <p>{item.description}</p>
-              <p><strong>Location:</strong> {item.location}</p>
               <a href={mapLink(item.location)} target="_blank" rel="noopener noreferrer" className="direction-link">
                 Get Directions
               </a>
@@ -127,11 +63,6 @@ function PlaceSection({ title, items }) {
     </section>
   );
 }
-
-PlaceSection.propTypes = {
-  title: PropTypes.string.isRequired,
-  items: PropTypes.array.isRequired,
-};
 
 export default function Japan() {
   const [selectedTrip, setSelectedTrip] = useState(trips[0]);
@@ -147,13 +78,11 @@ export default function Japan() {
             {trips.map((trip) => (
               <button
                 key={trip.id}
-                type="button"
                 className={`card ${trip.id === selectedTrip.id ? "active" : ""}`}
                 onClick={() => setSelectedTrip(trip)}
               >
                 <img src={trip.image} alt={trip.title} />
                 <h3>{trip.title}</h3>
-                <p>{trip.start} → {trip.end}</p>
               </button>
             ))}
           </aside>
@@ -162,31 +91,13 @@ export default function Japan() {
             <img className="hero-img" src={selectedTrip.image} alt={selectedTrip.title} />
             <h2>{selectedTrip.title}</h2>
 
-            <p><strong>Start:</strong> {selectedTrip.start}</p>
-            <p><strong>End:</strong> {selectedTrip.end}</p>
-
-            <h3>Trip Stops</h3>
-            <div className="places-grid">
-              {selectedTrip.stops.map((stop) => (
-                <article className="place-card" key={stop.name}>
-                  <img src={stop.image} alt={stop.name} />
-                  <div className="place-card-content">
-                    <h4>{stop.name}</h4>
-                    <a href={mapLink(stop.location)} target="_blank" rel="noopener noreferrer" className="direction-link">
-                      Get Directions
-                    </a>
-                  </div>
-                </article>
-              ))}
-            </div>
-
             <a href={tripRouteLink(selectedTrip)} target="_blank" rel="noopener noreferrer" className="btn">
               🚗 Start Trip Navigation
             </a>
 
-            <PlaceSection title={SECTION_TITLES.activities} items={selectedTrip.activities} />
-            <PlaceSection title={SECTION_TITLES.hotels} items={selectedTrip.hotels} />
-            <PlaceSection title={SECTION_TITLES.restaurants} items={selectedTrip.restaurants} />
+            <PlaceSection title="Activities" items={selectedTrip.activities} />
+            <PlaceSection title="Hotels" items={selectedTrip.hotels} />
+            <PlaceSection title="Restaurants" items={selectedTrip.restaurants} />
           </section>
         </div>
       </main>

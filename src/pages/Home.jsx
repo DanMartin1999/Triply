@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./Home.css";
-import MapPage from "./Map";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
@@ -74,11 +73,12 @@ export default function Home() {
               key={cat}
               className={active === cat ? "active" : ""}
               onClick={() => {
-                setActive(cat);
+  setActive(cat);
 
-                if (cat === "Voting") navigate("/voting");
-                if (cat === "Support") navigate("/support");
-              }}
+  if (cat === "Voting") navigate("/voting");
+  if (cat === "Support") navigate("/support");
+  if (cat === "Map") navigate("/map");
+}}
             >
               {cat}
             </button>
@@ -118,13 +118,11 @@ export default function Home() {
               <div
                 className="card"
                 key={i}
-                onClick={() =>
-                  navigate(
-                    `/destination/${place.name
-                      .toLowerCase()
-                      .replace(/\s+/g, "-")}`
-                  )
-                }
+                onClick={() => {
+                  // ✅ DIRECT ROUTES (NO MORE dynamic /destination/)
+                  if (place.name === "Barbados") navigate("/barbados");
+                  if (place.name === "Panama") navigate("/panama");
+                }}
               >
                 <div className="image">
                   <img src={place.image} alt={place.name} />
@@ -140,13 +138,10 @@ export default function Home() {
         </div>
       )}
 
-      {/* MAP */}
-      {active === "Map" && <MapPage />}
-
       {/* OTHER TABS */}
       {active !== "Home" && active !== "Map" && (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
-          <h2 style={{ marginBottom: 10 }}>{active}</h2>
+          <h2>{active}</h2>
           <p style={{ color: "gray" }}>
             This feature is under development.
           </p>
