@@ -7,14 +7,14 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Default page → Login */}
+        {/* Default → Login */}
         <Route path="/" element={<Navigate to="/login" />} />
 
         {/* Auth pages */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
 
-        {/* Home page after login */}
+        {/* Home after login */}
         <Route path="/home" element={<Home />} />
       </Routes>
     </BrowserRouter>
