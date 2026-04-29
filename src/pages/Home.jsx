@@ -66,7 +66,7 @@ export default function Home() {
 
       {/* TOP */}
       <div className="top-section">
-        <h1>Stays for every travel style</h1>
+        <h1>Plan Together. Travel Together. Laugh Together.</h1>
 
         <div className="tabs">
           {categories.map((cat) => (
