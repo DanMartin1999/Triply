@@ -122,6 +122,7 @@ export default function Home() {
                   // ✅ DIRECT ROUTES (NO MORE dynamic /destination/)
                   if (place.name === "Barbados") navigate("/barbados");
                   if (place.name === "Panama") navigate("/panama");
+                  if (place.name === "Japan") navigate("/japan");
                 }}
               >
                 <div className="image">
