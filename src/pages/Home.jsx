@@ -1,12 +1,13 @@
 import { useState } from "react";
 import "./Home.css";
+import MapPage from "./Map";
 
 // Tabs (categories)
-const categories = ["Voting", "Bill Splitting", "Support", "Trips", "Map"];
+const categories = ["Home", "Voting", "Bill Splitting", "Support", "Trips", "Map"];
 
 // Data for cards
 const data = {
-  Voting: [
+  Home: [
     {
       name: "Panama",
       region: "Central America",
@@ -36,12 +37,16 @@ const data = {
       tag: "Tropical calm",
     },
   ],
+
+  Voting: [],
+  "Bill Splitting": [],
+  Support: [],
+  Trips: [],
+  Map: []
 };
 
-
-
-  export default function Home() {
-  const [active, setActive] = useState("Beach"); // 🔥 REQUIRED
+export default function Home() {
+  const [active, setActive] = useState("Home");
 
   return (
     <div className="container">
@@ -63,21 +68,25 @@ const data = {
         </div>
       </div>
 
-      {/* Cards Grid */}
-      <div className="grid">
-        {data[active]?.map((place, i) => (
-          <div className="card" key={i}>
-            <div className="image">
-              <img src={place.image} alt={place.name} />
-              <span className="tag">{place.tag}</span>
-            </div>
+      {/* CONDITIONAL CONTENT */}
+      {active === "Map" ? (
+        <MapPage />
+      ) : (
+        <div className="grid">
+          {data[active]?.map((place, i) => (
+            <div className="card" key={i}>
+              <div className="image">
+                <img src={place.image} alt={place.name} />
+                <span className="tag">{place.tag}</span>
+              </div>
 
-            <h3>{place.name}</h3>
-            <p>{place.region}</p>
-            <strong>{place.price} avg per night</strong>
-          </div>
-        ))}
-      </div>
+              <h3>{place.name}</h3>
+              <p>{place.region}</p>
+              <strong>{place.price} avg per night</strong>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
