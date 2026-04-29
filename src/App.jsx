@@ -3,25 +3,21 @@ import Home from "./pages/Home";
 import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
 import Voting from "./pages/Voting";
-
+import Support from "./pages/Support";   // ✅ NEW
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Default → Login */}
         <Route path="/" element={<Navigate to="/login" />} />
 
-        {/* Auth pages */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
 
-        {/* Home after login */}
         <Route path="/home" element={<Home />} />
 
-        {/* Voting page */}
         <Route path="/voting" element={<Voting />} />
-
+        <Route path="/support" element={<Support />} />   {/* ✅ NEW */}
       </Routes>
     </BrowserRouter>
   );

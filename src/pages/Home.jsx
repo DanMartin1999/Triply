@@ -66,7 +66,7 @@ export default function Home() {
 
       {/* TOP */}
       <div className="top-section">
-        <h1>Plan Together. Travel Together. Laugh Together.</h1>
+        <h1 className="slogan">Plan Together. Travel Together. Laugh Together.</h1>
 
         <div className="tabs">
           {categories.map((cat) => (
@@ -76,10 +76,8 @@ export default function Home() {
               onClick={() => {
                 setActive(cat);
 
-                // ✅ FIX: Navigate to Voting page
                 if (cat === "Voting") navigate("/voting");
-
-                // You can add more navigation later for other tabs
+                if (cat === "Support") navigate("/support");
               }}
             >
               {cat}
@@ -146,7 +144,7 @@ export default function Home() {
       {active === "Map" && <MapPage />}
 
       {/* OTHER TABS */}
-      {active !== "Home" && active !== "Map" && cat !== "Voting" && (
+      {active !== "Home" && active !== "Map" && (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
           <h2 style={{ marginBottom: 10 }}>{active}</h2>
           <p style={{ color: "gray" }}>
