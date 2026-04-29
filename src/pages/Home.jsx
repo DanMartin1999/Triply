@@ -1,60 +1,73 @@
 import { useState } from "react";
 import "./Home.css";
 import MapPage from "./Map";
+import { useNavigate } from "react-router-dom";
 
-// Tabs (categories)
-const categories = ["Home", "Voting", "Bill Splitting", "Support", "Trips", "Map"];
+export default function Home() {
+  const navigate = useNavigate();
 
-// Data for cards
-const data = {
-  Home: [
+  const categories = ["Home", "Voting", "Bill Splitting", "Support", "Trips", "Map"];
+  const [active, setActive] = useState("Home");
+  const [homeTab, setHomeTab] = useState("Beach");
+
+  const beachPlaces = [
     {
       name: "Panama",
-      region: "Central America",
+      location: "Central America",
       price: "$120",
-      image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+      image: "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?q=80&w=1200&auto=format&fit=crop",
       tag: "Island escape",
     },
     {
       name: "Barbados",
-      region: "Caribbean",
+      location: "Caribbean",
       price: "$260",
-      image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+      image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
       tag: "Caribbean calm",
     },
     {
       name: "Puerto Rico",
-      region: "Caribbean",
+      location: "Caribbean",
       price: "$190",
-      image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+      image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1200&auto=format&fit=crop",
       tag: "Coastal culture",
     },
     {
       name: "Hawaii",
-      region: "United States",
+      location: "United States",
       price: "$355",
-      image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+      image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
       tag: "Tropical calm",
     },
-  ],
+  ];
 
-  Voting: [],
-  "Bill Splitting": [],
-  Support: [],
-  Trips: [],
-  Map: []
-};
+  const culturePlaces = [
+    {
+      name: "Madrid",
+      location: "Spain",
+      price: "$150",
+      image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=1200&auto=format&fit=crop",
+      tag: "Art & culture",
+    },
+    {
+      name: "Tokyo",
+      location: "Japan",
+      price: "$200",
+      image: "https://images.unsplash.com/photo-1590559899731-a382839e5549?q=80&w=1200&auto=format&fit=crop",
+      tag: "Street food & nightlife",
+    },
+  ];
 
-export default function Home() {
-  const [active, setActive] = useState("Home");
+  const displayedPlaces =
+    homeTab === "Culture" ? culturePlaces : beachPlaces;
 
   return (
     <div className="container">
-      {/* Top Section */}
+
+      {/* TOP */}
       <div className="top-section">
         <h1>Stays for every travel style</h1>
 
-        {/* Tabs */}
         <div className="tabs">
           {categories.map((cat) => (
             <button
@@ -68,23 +81,70 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CONDITIONAL CONTENT */}
-      {active === "Map" ? (
-        <MapPage />
-      ) : (
-        <div className="grid">
-          {data[active]?.map((place, i) => (
-            <div className="card" key={i}>
-              <div className="image">
-                <img src={place.image} alt={place.name} />
-                <span className="tag">{place.tag}</span>
-              </div>
+      {/* HOME */}
+      {active === "Home" && (
+        <div>
 
-              <h3>{place.name}</h3>
-              <p>{place.region}</p>
-              <strong>{place.price} avg per night</strong>
-            </div>
-          ))}
+          <div style={{ textAlign: "center", marginBottom: "40px" }}>
+            <h2>Your next trip starts here</h2>
+            <p>Search, explore, and plan your perfect trip.</p>
+          </div>
+
+          <h2 style={{ textAlign: "center" }}>Explore stays</h2>
+
+          <div className="tabs" style={{ justifyContent: "center" }}>
+            <button
+              className={homeTab === "Beach" ? "active" : ""}
+              onClick={() => setHomeTab("Beach")}
+            >
+              Beach
+            </button>
+
+            <button
+              className={homeTab === "Culture" ? "active" : ""}
+              onClick={() => setHomeTab("Culture")}
+            >
+              Culture
+            </button>
+          </div>
+
+          <div className="grid">
+            {displayedPlaces.map((place, i) => (
+              <div
+                className="card"
+                key={i}
+                onClick={() =>
+                  navigate(
+                    `/destination/${place.name
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}`
+                  )
+                }
+              >
+                <div className="image">
+                  <img src={place.image} alt={place.name} />
+                  <span className="tag">{place.tag}</span>
+                </div>
+
+                <h3>{place.name}</h3>
+                <p>{place.location}</p>
+                <strong>{place.price} avg per night</strong>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* MAP */}
+      {active === "Map" && <MapPage />}
+
+      {/* OTHER TABS */}
+      {active !== "Home" && active !== "Map" && (
+        <div style={{ textAlign: "center", marginTop: "50px" }}>
+          <h2 style={{ marginBottom: 10 }}>{active}</h2>
+          <p style={{ color: "gray" }}>
+            This feature is under development.
+          </p>
         </div>
       )}
     </div>
