@@ -16,10 +16,9 @@ export default function LoginPage() {
       return;
     }
 
-    // normalize input (fixes most login bugs)
     const input = userInput.trim().toLowerCase();
-    const savedUsername = savedUser.username.trim().toLowerCase();
-    const savedEmail = savedUser.email.trim().toLowerCase();
+    const savedUsername = savedUser.username?.trim().toLowerCase();
+    const savedEmail = savedUser.email?.trim().toLowerCase();
 
     const passwordMatch = password === savedUser.password;
 
@@ -27,10 +26,9 @@ export default function LoginPage() {
       input === savedUsername || input === savedEmail;
 
     if (userMatch && passwordMatch) {
-  localStorage.setItem("triplyUser", JSON.stringify({
-    firstName: savedUser.firstName,
-    email: savedUser.email
-  }));
+  console.log("LOGIN SUCCESS"); // 👈 ADD THIS LINE
+
+  localStorage.setItem("isLoggedIn", "true");
 
   navigate("/home");
 } else {
@@ -66,7 +64,7 @@ export default function LoginPage() {
             <button
               type="button"
               style={styles.smallLinkBtn}
-              onClick={() => alert("Forgot password feature can be added later")}
+              onClick={() => alert("Forgot password feature later")}
             >
               Forgot Password
             </button>

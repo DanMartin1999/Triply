@@ -21,9 +21,14 @@ export default function SignupPage() {
       password,
     };
 
+    // 💾 save full user
     localStorage.setItem("triplyUser", JSON.stringify(user));
 
-    navigate("/"); // ✅ go to home after signup
+    // 🔐 ALSO mark user as logged in (THIS WAS MISSING)
+    localStorage.setItem("isLoggedIn", "true");
+
+    // 🚀 go directly to home after signup
+    navigate("/home");
   }
 
   return (
