@@ -25,13 +25,13 @@ export default function Home() {
       image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
       tag: "Caribbean calm",
     },
-    {
-      name: "Puerto Rico",
-      location: "Caribbean",
-      price: "$190",
-      image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1200&auto=format&fit=crop",
-      tag: "Coastal culture",
-    },
+   {
+  name: "Japan",
+  location: "Tokyo",
+  price: "$200",
+  image: "https://images.unsplash.com/photo-1590559899731-a382839e5549?q=80&w=1200&auto=format&fit=crop",
+  tag: "Street food & nightlife",
+},
     {
       name: "Hawaii",
       location: "United States",

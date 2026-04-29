@@ -3,7 +3,9 @@ import Home from "./pages/Home";
 import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
 import Voting from "./pages/Voting";
-import Support from "./pages/Support";   // ✅ NEW
+import Support from "./pages/Support";   
+import Japan from "./pages/Japan";
+
 
 export default function App() {
   return (
@@ -17,7 +19,10 @@ export default function App() {
         <Route path="/home" element={<Home />} />
 
         <Route path="/voting" element={<Voting />} />
-        <Route path="/support" element={<Support />} />   {/* ✅ NEW */}
+        <Route path="/support" element={<Support />} />   
+
+        <Route path="/destination/japan" element={<Japan />} />
+
       </Routes>
     </BrowserRouter>
   );
