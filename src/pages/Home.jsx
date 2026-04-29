@@ -73,7 +73,14 @@ export default function Home() {
             <button
               key={cat}
               className={active === cat ? "active" : ""}
-              onClick={() => setActive(cat)}
+              onClick={() => {
+                setActive(cat);
+
+                // ✅ FIX: Navigate to Voting page
+                if (cat === "Voting") navigate("/voting");
+
+                // You can add more navigation later for other tabs
+              }}
             >
               {cat}
             </button>
@@ -139,7 +146,7 @@ export default function Home() {
       {active === "Map" && <MapPage />}
 
       {/* OTHER TABS */}
-      {active !== "Home" && active !== "Map" && (
+      {active !== "Home" && active !== "Map" && cat !== "Voting" && (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
           <h2 style={{ marginBottom: 10 }}>{active}</h2>
           <p style={{ color: "gray" }}>

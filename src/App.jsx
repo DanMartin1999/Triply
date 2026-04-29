@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
+import Voting from "./pages/Voting";
+
 
 export default function App() {
   return (
@@ -16,6 +18,10 @@ export default function App() {
 
         {/* Home after login */}
         <Route path="/home" element={<Home />} />
+
+        {/* Voting page */}
+        <Route path="/voting" element={<Voting />} />
+
       </Routes>
     </BrowserRouter>
   );
