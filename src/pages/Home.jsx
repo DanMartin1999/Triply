@@ -92,6 +92,7 @@ export default function Home() {
                 if (cat === "Voting") navigate("/voting");
                 if (cat === "Support") navigate("/support");
                 if (cat === "Map") navigate("/map");
+                if (cat === "Bill Splitting") navigate("/splitbills");
               }}
             >
               {cat}
