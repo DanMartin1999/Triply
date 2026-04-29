@@ -5,9 +5,12 @@ import { useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
 
-  const categories = ["Home", "Voting", "Bill Splitting", "Support", "Trips", "Map"];
+  const categories = ["Home", "Voting", "Bill Splitting", "Support", "Map"];
   const [active, setActive] = useState("Home");
   const [homeTab, setHomeTab] = useState("Beach");
+
+  // 👤 USER (SAFE)
+  const user = JSON.parse(localStorage.getItem("triplyUser"));
 
   // 🔥 BEACH PLACES
   const beachPlaces = [
@@ -39,7 +42,7 @@ export default function Home() {
       name: "Hawaii",
       location: "United States",
       price: "$355",
-      route: "/hawaii", // ⚠️ only works if you create this page
+      route: "/hawaii",
       image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
       tag: "Tropical calm",
     },
@@ -73,8 +76,11 @@ export default function Home() {
 
       {/* TOP */}
       <div className="top-section">
-        <h1 className="slogan">Plan Together. Travel Together. Laugh Together.</h1>
+        <h1 className="slogan">
+          Plan Together. Travel Together. Laugh Together.
+        </h1>
 
+        {/* CATEGORY TABS */}
         <div className="tabs">
           {categories.map((cat) => (
             <button
@@ -94,17 +100,21 @@ export default function Home() {
         </div>
       </div>
 
-      {/* HOME */}
+      {/* HOME CONTENT */}
       {active === "Home" && (
         <div>
 
+          {/* 👤 WELCOME FIX (NEW) */}
           <div style={{ textAlign: "center", marginBottom: "40px" }}>
-            <h2>Your next trip starts here</h2>
-            <p>Search, explore, and plan your perfect trip.</p>
+            <h2>
+              Welcome {user?.firstName || "Traveler"} 📌
+            </h2>
+            <p>Your next trip starts here</p>
           </div>
 
           <h2 style={{ textAlign: "center" }}>Explore stays</h2>
 
+          {/* BEACH / CULTURE TOGGLE */}
           <div className="tabs" style={{ justifyContent: "center" }}>
             <button
               className={homeTab === "Beach" ? "active" : ""}
@@ -121,6 +131,7 @@ export default function Home() {
             </button>
           </div>
 
+          {/* GRID */}
           <div className="grid">
             {displayedPlaces.map((place, i) => (
               <div

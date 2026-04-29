@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
 
 import Home from "./pages/Home";
 import LoginPage from "./pages/Login";
@@ -8,43 +8,84 @@ import Support from "./pages/Support";
 import Japan from "./pages/Japan";
 import MapPage from "./pages/Map";
 
-// DESTINATION PAGES
 import Barbados from "./pages/Barbados";
 import Panama from "./pages/Panama";
 import Madrid from "./pages/Madrid";
+import Profile from "./pages/Profile"; // (make sure this exists)
+
+function Layout({ children }) {
+  const location = useLocation();
+
+  // 🚨 HIDE NAV ON AUTH PAGES
+  const hideNav =
+    location.pathname === "/login" ||
+    location.pathname === "/signup";
+
+  return (
+    <>
+      {!hideNav && (
+        <nav
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "15px",
+            background: "#111",
+          }}
+        >
+          <Link to="/home" style={{ color: "white", textDecoration: "none" }}>
+            ⬅ Home
+          </Link>
+
+          <div style={{ display: "flex", gap: "20px" }}>
+            <Link to="/support" style={{ color: "white", textDecoration: "none" }}>
+              Support
+            </Link>
+
+            <Link to="/map" style={{ color: "white", textDecoration: "none" }}>
+              Map
+            </Link>
+
+            <Link to="/profile" style={{ color: "white", textDecoration: "none" }}>
+              👤 Profile
+            </Link>
+          </div>
+        </nav>
+      )}
+
+      {children}
+    </>
+  );
+}
 
 export default function App() {
   return (
     <BrowserRouter>
+      <Layout>
+        <Routes>
 
-  {/* 🔥 NAVBAR */}
-  <nav style={{ display: "flex", gap: "20px", padding: "15px", background: "#111" }}>
-    <Link to="/home" style={{ color: "white" }}>Home</Link>
-    <Link to="/panama" style={{ color: "white" }}>Panama</Link>
-    <Link to="/barbados" style={{ color: "white" }}>Barbados</Link>
-    <Link to="/madrid" style={{ color: "white" }}>Madrid</Link>
-    <Link to="/map" style={{ color: "white" }}>Map</Link>
-  </nav>
+          {/* 🔥 ENTRY FLOW */}
+          <Route path="/" element={<Navigate to="/home" />} />
 
-  <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
 
-    <Route path="/" element={<Navigate to="/home" />} />
+          {/* MAIN APP */}
+          <Route path="/home" element={<Home />} />
+          <Route path="/voting" element={<Voting />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/map" element={<MapPage />} />
 
-    <Route path="/login" element={<LoginPage />} />
-    <Route path="/signup" element={<SignupPage />} />
+          {/* DESTINATIONS */}
+          <Route path="/barbados" element={<Barbados />} />
+          <Route path="/panama" element={<Panama />} />
+          <Route path="/japan" element={<Japan />} />
+          <Route path="/madrid" element={<Madrid />} />
 
-    <Route path="/home" element={<Home />} />
-    <Route path="/voting" element={<Voting />} />
-    <Route path="/support" element={<Support />} />
-    <Route path="/map" element={<MapPage />} />
+          {/* PROFILE (NEW SETTINGS PAGE) */}
+          <Route path="/profile" element={<Profile />} />
 
-    <Route path="/barbados" element={<Barbados />} />
-    <Route path="/panama" element={<Panama />} />
-    <Route path="/japan" element={<Japan />} />
-    <Route path="/madrid" element={<Madrid />} />
-
-  </Routes>
-
-</BrowserRouter>
+        </Routes>
+      </Layout>
+    </BrowserRouter>
   );
 }

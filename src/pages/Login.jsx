@@ -27,8 +27,13 @@ export default function LoginPage() {
       input === savedUsername || input === savedEmail;
 
     if (userMatch && passwordMatch) {
-      navigate("/home"); // ✅ FIXED ROUTE
-    } else {
+  localStorage.setItem("triplyUser", JSON.stringify({
+    firstName: savedUser.firstName,
+    email: savedUser.email
+  }));
+
+  navigate("/home");
+} else {
       alert("Wrong username/email or password.");
     }
   }
